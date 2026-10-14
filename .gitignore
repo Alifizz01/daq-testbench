@@ -1,0 +1,4 @@
+__pycache__/
+*.xml
+summary.md
+.pytest_cache/

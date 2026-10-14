@@ -1,0 +1,33 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Suite against simulator
+        run: pytest -q --junitxml=report.xml
+      - name: Fault demo (must fail)
+        run: |
+          if pytest -q --inject-fault DROP:2 --junitxml=fault.xml; then
+            echo "injected fault was not detected"; exit 1
+          fi
+      - name: Markdown summary
+        if: always()
+        run: |
+          python summary.py report.xml > summary.md
+          cat summary.md >> "$GITHUB_STEP_SUMMARY"
+          echo "### Fault demo (DROP on CH2, failures expected)" >> "$GITHUB_STEP_SUMMARY"
+          python summary.py fault.xml >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit
+          path: |
+            report.xml
+            fault.xml
+            summary.md
