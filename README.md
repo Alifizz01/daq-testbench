@@ -1,4 +1,33 @@
-# daq-testbench
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
+    <img src="assets/logo.svg" alt="DAQProof" width="360">
+  </picture>
+</p>
+
+<p align="center">
+  <b>Does every channel of the DAQ still measure what it should?</b><br>
+  A pytest suite that checks an 8-channel voltage DAQ over SCPI/PyVISA: accuracy, noise, crosstalk and dropped samples, against a simulated instrument so it runs in CI.
+</p>
+
+<p align="center">
+  <a href="https://github.com/Alifizz01/DAQProof/actions/workflows/ci.yml"><img src="https://github.com/Alifizz01/DAQProof/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/python-3.10%2B-3776AB" alt="python">
+  <img src="https://img.shields.io/badge/pytest-70%20tests-0A9EDC" alt="pytest">
+  <img src="https://img.shields.io/badge/SCPI-PyVISA-555555" alt="SCPI">
+</p>
+
+<p align="center"><img src="docs/hero.png" alt="DC error per channel against the limit: the healthy instrument passes, an injected stuck channel fails" width="900"></p>
+
+> **Scope:** Simulated instrument only; limits are illustrative. Personal portfolio project, not affiliated with any employer.
+
+---
+
+## The problem
+
+A measurement system drifts, a channel sticks, a block of samples goes missing. If nobody checks, every test result built on top is wrong. This suite checks the instrument itself, and CI proves it catches faults by injecting one and requiring the run to fail.
+
+## Overview
 
 A pytest suite that checks a multi-channel voltage DAQ over SCPI through PyVISA,
 plus a small simulated instrument so the suite runs anywhere, including CI.
